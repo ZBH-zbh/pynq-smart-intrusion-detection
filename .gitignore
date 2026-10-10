@@ -1,0 +1,44 @@
+# Vivado / Vitis HLS build artifacts
+*.cache/
+*.runs/
+*.gen/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.Xil/
+*.jou
+*.log
+*.pb
+*.str
+*.wdb
+*.xpr.lck
+
+# HLS solution build directories (keep source .cpp / .tcl / README)
+*_axis/*_axis/
+hardware/scripts/hls_verification/build/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Local-only notes and artifacts
+*.local.md
+local_results/
+*.local/
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

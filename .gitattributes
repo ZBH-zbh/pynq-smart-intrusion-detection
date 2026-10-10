@@ -1,0 +1,16 @@
+# Normalize line endings for text files
+* text=auto eol=lf
+
+# Vivado / Vitis HLS generated files that should not be diffed
+*.bit binary
+*.hwh binary
+*.dcp binary
+*.xci binary
+*.rpt text
+*.tcl text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.cpp text eol=lf
+*.xdc text eol=lf
+*.csv text eol=lf
+*.json text eol=lf

@@ -1,0 +1,11 @@
+ip,variant,bram_18k,dsp,ff,lut,estimated_clock_ns,worst_latency_cycles,interval_cycles,pipeline_ii
+rgb2gray,baseline,0,5,509,465,6.912,undef,undef,1
+rgb2gray,optimized,0,2,228,407,6.450,76806,76807,1
+frame_diff,baseline,64,3,409,417,6.912,undef,undef,1
+frame_diff,optimized,64,0,145,373,6.417,76803,76804,1
+threshold,baseline,0,3,486,472,6.912,undef,undef,1
+threshold,optimized,0,0,208,408,4.451,76803,76804,1
+morphology,baseline,2,3,958,936,7.031,undef,undef,1
+morphology,optimized,2,0,285,585,6.761,76804,76805,1
+total,baseline,66,14,2362,2290,,,,
+total,optimized,66,2,866,1773,,,,
