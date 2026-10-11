@@ -82,8 +82,8 @@ def main():
     print("\n  SSH 已连接")
     run(client, "echo xilinx | sudo -S pkill -f tracker_server.py; sleep 1", 30)
 
-    feats = os.path.join(os.path.dirname(HERE), "software", "tracking")
-    deploy = os.path.join(os.path.dirname(HERE), "software", "deploy")
+    feats = os.path.join(os.path.dirname(HERE), "FPGA2.0", "new_features")
+    deploy = os.path.join(os.path.dirname(HERE), "FPGA2.0", "pynq_deploy")
     here = HERE
     uploads = [
         (os.path.join(feats, "tracker_server.py"), "tracker_server.py"),

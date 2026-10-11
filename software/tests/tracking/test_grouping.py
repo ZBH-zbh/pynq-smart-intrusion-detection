@@ -15,7 +15,7 @@ import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.abspath(os.path.join(HERE, "..", "..", "deploy")))
+sys.path.insert(0, os.path.abspath(os.path.join(HERE, "..", "pynq_deploy")))
 
 from grouping import StripGrouper  # noqa: E402
 

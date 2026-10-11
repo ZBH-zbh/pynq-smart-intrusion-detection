@@ -6,7 +6,6 @@ auto-restart until the streaming chain has been verified on the board.
 """
 
 from collections import deque
-from pathlib import Path
 import time
 
 import cv2
@@ -26,16 +25,7 @@ from motion_common import (
 )
 
 
-# Default to the overlay shipped in this repository; on the PYNQ board copy
-# hardware/overlay/* to the same directory as this script, or override via the
-# OVERLAY_PATH environment variable.
-BITSTREAM = (
-    Path(__file__).with_name("intrusion_detection_optimized.bit")
-    if (Path(__file__).parent / "intrusion_detection_optimized.bit").exists()
-    else Path(__file__).resolve().parents[2] / "hardware" / "overlay" / "intrusion_detection_optimized.bit"
-)
-if "OVERLAY_PATH" in __import__("os").environ:
-    BITSTREAM = Path(__import__("os").environ["OVERLAY_PATH"])
+BITSTREAM = "/home/xilinx/intrusion_detection_optimized.bit"
 
 DMA_BASE_ADDR = 0x41E00000
 FRAME_DIFF_BASE = 0x40000000

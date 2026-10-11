@@ -1,0 +1,69 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Sun Oct 11 21:22:19 2026
+| Host         : LAPTOP-Q7IUAOQI running 64-bit major release  (build 9200)
+| Command      : report_ip_status
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+IP Status Summary
+
+1. Project IP Status
+--------------------
+Your project uses 10 IP. Some of these IP may have undergone changes in this release of the software. Please review the recommended actions.
+
+More information on the Xilinx versioning policy is available at www.xilinx.com.
+
+Project IP Instances
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| Instance Name                   | Status                    | Recommendation               | Change    | IP Name            | IP      | New Version   | New        | Original Part        |
+|                                 |                           |                              | Log       |                    | Version |               | License    |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_axi_dma_0_0            | Up-to-date                | No changes required          |  *(1)     | AXI Direct Memory  | 7.1     | 7.1 (Rev. 37) | Included   | xc7z020clg400-1      |
+|                                 |                           |                              |           | Access             | (Rev.   |               |            |                      |
+|                                 |                           |                              |           |                    | 37)     |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_axi_gpio_0_0           | Up-to-date                | No changes required          |  *(2)     | AXI GPIO           | 2.0     | 2.0 (Rev. 37) | Included   | xc7z020clg400-1      |
+|                                 |                           |                              |           |                    | (Rev.   |               |            |                      |
+|                                 |                           |                              |           |                    | 37)     |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_axi_interconnect_0_0   | Up-to-date (discontinued) | No changes required          |  *(3)     | AXI Interconnect   | 2.1     | 2.1 (Rev. 38) | Included   | xc7z020clg400-1      |
+|                                 |                           |                              |           |                    | (Rev.   |               |            |                      |
+|                                 |                           |                              |           |                    | 38)     |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_axi_interconnect_1_0   | Up-to-date (discontinued) | No changes required          |  *(4)     | AXI Interconnect   | 2.1     | 2.1 (Rev. 38) | Included   | xc7z020clg400-1      |
+|                                 |                           |                              |           |                    | (Rev.   |               |            |                      |
+|                                 |                           |                              |           |                    | 38)     |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_frame_diff_0_0         | IP definition not found   | Add IP definition to catalog | Change    | frame_diff         | 1.0     | N/A           | Included   | xc7z020clg400-1      |
+|                                 |                           |                              | Log not   |                    | (Rev.   |               |            |                      |
+|                                 |                           |                              | available |                    | 2114784 |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_morphology_0_0         | IP definition not found   | Add IP definition to catalog | Change    | morphology         | 1.0     | N/A           | Included   | xc7z020clg400-1      |
+|                                 |                           |                              | Log not   |                    | (Rev.   |               |            |                      |
+|                                 |                           |                              | available |                    | 2114784 |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_proc_sys_reset_0_0     | Up-to-date                | No changes required          |  *(5)     | Processor System   | 5.0     | 5.0 (Rev. 17) | Included   | xc7z020clg400-1      |
+|                                 |                           |                              |           | Reset              | (Rev.   |               |            |                      |
+|                                 |                           |                              |           |                    | 17)     |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_processing_system7_0_0 | Up-to-date                | No changes required          |  *(6)     | ZYNQ7 Processing   | 5.5     | 5.5 (Rev. 8)  | Included   | xc7z020clg400-1      |
+|                                 |                           |                              |           | System             | (Rev.   |               |            |                      |
+|                                 |                           |                              |           |                    | 8)      |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_rgb2gray_0_0           | IP definition not found   | Add IP definition to catalog | Change    | rgb2gray           | 1.0     | N/A           | Included   | xc7z020clg400-1      |
+|                                 |                           |                              | Log not   |                    | (Rev.   |               |            |                      |
+|                                 |                           |                              | available |                    | 2114784 |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| design_1_threshold_0_0          | IP definition not found   | Add IP definition to catalog | Change    | threshold          | 1.0     | N/A           | Included   | xc7z020clg400-1      |
+|                                 |                           |                              | Log not   |                    | (Rev.   |               |            |                      |
+|                                 |                           |                              | available |                    | 2114784 |               |            |                      |
++---------------------------------+---------------------------+------------------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+*(1) e:/Xilinx252/2025.2/Vivado/data/ip/xilinx/axi_dma_v7_1/doc/axi_dma_v7_1_changelog.txt
+*(2) e:/Xilinx252/2025.2/Vivado/data/ip/xilinx/axi_gpio_v2_0/doc/axi_gpio_v2_0_changelog.txt
+*(3) e:/Xilinx252/2025.2/Vivado/data/ip/xilinx/axi_interconnect_v2_1/doc/axi_interconnect_v2_1_changelog.txt
+*(4) e:/Xilinx252/2025.2/Vivado/data/ip/xilinx/axi_interconnect_v2_1/doc/axi_interconnect_v2_1_changelog.txt
+*(5) e:/Xilinx252/2025.2/Vivado/data/ip/xilinx/proc_sys_reset_v5_0/doc/proc_sys_reset_v5_0_changelog.txt
+*(6) e:/Xilinx252/2025.2/Vivado/data/ip/xilinx/processing_system7_v5_5/doc/processing_system7_v5_5_changelog.txt
+
+

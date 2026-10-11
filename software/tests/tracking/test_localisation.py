@@ -12,7 +12,7 @@ import cv2
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEPLOY = os.path.abspath(os.path.join(HERE, "..", "..", "deploy"))
+DEPLOY = os.path.abspath(os.path.join(HERE, "..", "pynq_deploy"))
 sys.path.insert(0, DEPLOY)
 sys.path.insert(0, HERE)
 

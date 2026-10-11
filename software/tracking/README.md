@@ -14,21 +14,28 @@
 | `test_target_tracker.py` | 跟踪器测试（28 项） |
 | `test_strip_merge.py` | 细边合并测试（15 项） |
 | `test_bg_detector.py` | 背景模型测试（19 项） |
+| `eval_strip_merge.py` | 用已知真值量化合并效果，输出召回率/精确率 |
+| `eval_detection_modes.py` | 尺寸×速度扫描，对比帧差与各种背景模型配置 |
+| `eval_bg_configs.py` | 背景模型形态学参数选型 |
+| `eval_scene_change.py` | 场景变化后背景收敛速度（曾用它定位舍入死区 bug） |
+| `recon_detections.py` | 侦察脚本：打印检测器实际输出（改断言前先看真实数据） |
+
 ## 快速验证（PC，不需要板卡）
 
 ```powershell
-cd software\tracking
-python -m unittest test_target_tracker test_strip_merge test_bg_detector
-python tracker_server.py --source synthetic --detector bg --port 8081
+cd E:\fpga\project\FPGA2.0\new_features
+E:\fpga\env\venv\Scripts\python.exe -m unittest test_target_tracker test_strip_merge test_bg_detector
+E:\fpga\env\venv\Scripts\python.exe eval_detection_modes.py
+E:\fpga\env\venv\Scripts\python.exe tracker_server.py --source synthetic --detector bg --port 8081
 # 浏览器打开 http://127.0.0.1:8081/
 ```
 
 ## 上板
 
 ```powershell
-cd tools
-python deploy_tracker.py board bg   # 板上跑测试 + 启动
-python deploy_tracker.py stop
+cd E:\fpga\env\downloads
+E:\fpga\env\venv\Scripts\python.exe deploy_tracker.py board bg   # 板上跑测试 + 启动
+E:\fpga\env\venv\Scripts\python.exe deploy_tracker.py stop
 ```
 
 访问 `http://192.168.137.125:8081/`。

@@ -53,6 +53,28 @@ FILES = [
     "test_grouping.py",
 ]
 
+#: The overlaid hardware, which is what makes the board runnable WITHOUT Vivado.
+#:
+#: These were missing: the upload only ever carried .py files, so a board could
+#: not be brought up from this repository alone -- the bitstream had to be put
+#: there by hand. That is exactly the "teammate must not need Vivado" case.
+#:
+#: PYNQ resolves Overlay(<bit>) by finding a .hwh with the same stem, so the two
+#: must travel together and keep their names. The board's code loads them from
+#: /home/xilinx/, not from the upload directory, so they are placed there.
+BITSTREAM_FILES = [
+    ("intrusion_detection_optimized.bit", "/home/xilinx"),
+    ("intrusion_detection_optimized.hwh", "/home/xilinx"),
+]
+
+#: Which overlay to ship. The 2025.2 build lives in its own directory so the
+#: 2022.1 bitstream -- the only one ever verified on hardware -- is never
+#: overwritten and the two stay trivially distinguishable.
+OVERLAY_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                 "..", "hardware", "overlay")
+)
+
 socket.setdefaulttimeout(300)
 
 
@@ -145,6 +167,33 @@ def main():
     for name in FILES:
         sftp.put(f"{LOCAL}\\{name}", f"{REMOTE}/{name}")
         print(f"  uploaded {name} ({sftp.stat(f'{REMOTE}/{name}').st_size} bytes)")
+
+    # The overlay, so the board is runnable from this repository alone. Skipped
+    # with a clear message rather than a traceback if the build has not been
+    # run, because "no bitstream yet" is a normal state, not a failure.
+    #
+    # Uploaded to the (writable) demo directory and then copied into place with
+    # sudo: /home/xilinx/intrusion_detection_optimized.* are owned by root with
+    # mode 644, so a plain SFTP write over them fails with EACCES even though
+    # the directory itself is writable by xilinx.
+    print("\n--- overlay ---")
+    for name, remote_dir in BITSTREAM_FILES:
+        local_path = os.path.join(OVERLAY_DIR, name)
+        if not os.path.exists(local_path):
+            print(f"  MISSING {local_path}")
+            print("  (build it first: vivado -mode batch -source "
+                  "vivado_optimization/build_2025_2.tcl)")
+            continue
+        staging = f"{REMOTE}/{name}"
+        sftp.put(local_path, staging)
+        size = sftp.stat(staging).st_size
+        target = f"{remote_dir}/{name}"
+        result = run(client,
+                     f"echo xilinx | sudo -S cp -f {staging} {target} && "
+                     f"echo xilinx | sudo -S chmod 644 {target} && "
+                     f"ls -l {target}", 60)
+        print(f"  uploaded {name} -> {target} ({size} bytes)")
+        print(f"    {result.strip().splitlines()[-1] if result.strip() else ''}")
     sftp.close()
 
     print("\n--- offline tests on the board ---")

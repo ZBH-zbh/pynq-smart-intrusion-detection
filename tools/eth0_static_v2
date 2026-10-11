@@ -1,0 +1,52 @@
+# eth0 configuration for PYNQ-Z2 -- STATIC, no DHCP, no alias.
+#
+# ---------------------------------------------------------------------------
+# Why DHCP was removed
+# ---------------------------------------------------------------------------
+# The original file was:
+#
+#   auto eth0
+#   iface eth0 inet dhcp            <-- no DHCP server on a direct PC link
+#
+#   auto eth0:1
+#   iface eth0:1 inet static
+#   address 192.168.2.99
+#   netmask 255.255.255.0
+#
+# With no DHCP server reachable, dhclient could not renew. It kept two stale
+# leases from an earlier Internet-Connection-Sharing session
+# (192.168.137.61 and 192.168.137.125) and cycled between them. Every switch
+# removed the address for ~10 seconds. Observed directly:
+#
+#   17:19:23 inet 192.168.137.125
+#   17:19:29 (no address)
+#   17:19:41 inet 192.168.137.61
+#   17:19:52 inet 192.168.137.125
+#   17:20:02 (no address)
+#   17:20:14 inet 192.168.137.61
+#
+# That is what made the browser picture freeze for a few seconds, come back,
+# then freeze again -- and it also broke Jupyter's WebSocket ("Replacing stale
+# connection" / "Starting buffering") and any long-lived HTTP stream.
+#
+# ---------------------------------------------------------------------------
+# Why the eth0:1 alias was removed
+# ---------------------------------------------------------------------------
+# The alias (192.168.2.99) made ifup fail at boot:
+#
+#   ifup[714]: cat: '/sys/class/net/eth0:1/ifindex': No such file or directory
+#   ifup[729]: RTNETLINK answers: File exists
+#   ifup[217]: ifup: failed to bring up eth0:1
+#   systemd[1]: networking.service: Failed with result 'exit-code'.
+#
+# Because networking.service aborted, the static address was never applied and
+# dhclient took over -- defeating the whole point. The alias is not needed for
+# this project (the board is reached at 192.168.137.125), so it is dropped.
+# If you ever want the documented 192.168.2.99 fallback back, add it as a
+# second address on eth0 rather than as an eth0:1 alias.
+
+auto eth0
+iface eth0 inet static
+    address 192.168.137.125
+    netmask 255.255.255.0
+    broadcast 192.168.137.255

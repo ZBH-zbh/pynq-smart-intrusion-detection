@@ -41,7 +41,7 @@ except Exception:
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.abspath(os.path.join(HERE, "..", "deploy")))
+sys.path.insert(0, os.path.abspath(os.path.join(HERE, "..", "pynq_deploy")))
 
 from session import Session, SessionError  # noqa: E402
 from tracker_server import HEIGHT, WIDTH, TrackerPipeline  # noqa: E402

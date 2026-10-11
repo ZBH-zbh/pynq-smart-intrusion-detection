@@ -1,0 +1,21 @@
+[Unit]
+Description=PYNQ-Z2 Motion Detection live view (HTTP)
+Documentation=file:/home/xilinx/intrusion_demo/mjpeg_server.py
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# The overlay needs root, and PYNQ's PL server needs XILINX_XRT set
+# (without it pynq finds no devices -- see the reproduction guide 6.3).
+User=root
+Environment=XILINX_XRT=/usr
+WorkingDirectory=/home/xilinx/intrusion_demo
+ExecStart=/usr/local/share/pynq-venv/bin/python3 -u /home/xilinx/intrusion_demo/mjpeg_server.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/var/log/mjpeg_server.log
+StandardError=append:/var/log/mjpeg_server.log
+
+[Install]
+WantedBy=multi-user.target

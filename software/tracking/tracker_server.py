@@ -45,7 +45,7 @@ import numpy as np
 sys.path.insert(0, "/home/xilinx/intrusion_demo")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "..", "deploy")))
+    os.path.dirname(os.path.abspath(__file__)), "..", "pynq_deploy")))
 
 from motion_common import (  # noqa: E402
     ALARM_ZONE,

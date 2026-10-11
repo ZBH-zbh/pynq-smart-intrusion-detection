@@ -1,6 +1,6 @@
 # 复现指南
 
-## 1. 硬件与软件环境
+## 1. 环境与硬件
 
 | 项目 | 版本 / 型号 |
 |---|---|
@@ -8,76 +8,41 @@
 | PYNQ 镜像 | v3.0.1 |
 | 摄像头 | 罗技 C270i（UVC） |
 | 蜂鸣器 | Grove Buzzer，接 Grove Base Shield G1 |
-| PC 工具链 | Vivado / Vitis HLS 2022.1（后续可迁移到 2025.2） |
 | 板端 Python | 3.10.4（PYNQ venv） |
 | 关键库 | OpenCV 4.5.4、NumPy 1.21.5、pynq 3.0.1 |
 
-## 2. 硬件连接
+**电源**：推荐 12V 圆头适配器；micro-USB 供电可能在蜂鸣器工作时掉压重启。
 
-1. PYNQ-Z2 上电（推荐 12V 圆头电源）。
-2. 罗技 C270i 插入 PYNQ-Z2 USB 口。
-3. Grove Base Shield 插在 Arduino 排针上，Grove Buzzer 接 **G1**（黄线 = 信号）。
+**网络**：板子静态 IP `192.168.137.125/24`，电脑以太网口静态 IP `192.168.137.1/24`。
 
-## 3. 上传文件
+## 2. PC 端准备
 
-把以下文件传到 `/home/xilinx/intrusion_demo/`：
+```powershell
+# 1. 自检（仓库根目录）
+powershell -ExecutionPolicy Bypass -File .\check_env.ps1
+
+# 2. 安装部署依赖
+pip install paramiko
+
+# 3. 可选：安装 PC 测试依赖
+pip install numpy opencv-python pytest
+```
+
+## 3. 一键部署到板子
 
 ```bash
-# 核心 overlay 与 PS 脚本
-scp hardware/overlay/intrusion_detection_optimized.bit \
-   hardware/overlay/intrusion_detection_optimized.hwh \
-   software/deploy/*.py \
-   xilinx@<board-ip>:/home/xilinx/intrusion_demo/
-
-# 跟踪 / Web 配置模块
-scp software/tracking/{tracker_server.py,bg_detector.py,grouping.py,line_crossing.py,localisation.py,strip_merge.py,target_tracker.py,trail.py} \
-   xilinx@<board-ip>:/home/xilinx/intrusion_demo/
+cd tools
+python deploy_tracker.py board pl
 ```
 
-## 4. 校验 bitstream
+脚本会自动：
+- 通过 SSH 连接 `192.168.137.125`
+- 上传 `software/tracking/` 中的跟踪模块
+- 上传 `hardware/overlay/` 中的 2025.2 位流
+- 在板子上跑 312 项离线测试（约 6.5 分钟）
+- 启动 `tracker_server.py --source board --detector pl --port 8081`
 
-```bash
-cd /home/xilinx/intrusion_demo
-sha256sum intrusion_detection_optimized.bit intrusion_detection_optimized.hwh
-```
-
-期望输出：
-
-```text
-78e325fcb43c73fe2c45fbe6f0c21a86dcb2db1acc8a50384810f9c954771ee4  intrusion_detection_optimized.bit
-7e5b68b2906ab9995801db006d94fa067833a727075d2588dd689c64a64be716  intrusion_detection_optimized.hwh
-```
-
-哈希不一致不要加载 overlay。
-
-## 5. 运行实时演示
-
-```bash
-cd /home/xilinx/intrusion_demo
-echo xilinx | sudo -S env XILINX_XRT=/usr /usr/local/share/pynq-venv/bin/python3 \
-  pl_motion_detection_optimized.py --camera 0 --display 0
-```
-
-或在 Jupyter Notebook 中：
-
-```python
-%run /home/xilinx/intrusion_demo/pl_motion_detection_optimized.py
-```
-
-预期效果：
-- 实时画面左上角显示 `Targets / FPS / Normal|ALARM`。
-- 手在镜头前移动时出现绿色目标框。
-- 目标进入红色警戒区后，屏幕显示 `ALARM!`，蜂鸣器间歇响。
-
-## 6. 运行跟踪 / Web 配置服务
-
-```bash
-cd /home/xilinx/intrusion_demo
-echo xilinx | sudo -S env XILINX_XRT=/usr /usr/local/share/pynq-venv/bin/python3 \
-  tracker_server.py --source board --detector pl --port 8081
-```
-
-浏览器打开 `http://<board-ip>:8081`：
+浏览器打开 `http://192.168.137.125:8081`：
 - 拖拽黄色方框调整警戒区。
 - 拖拽量线两端调整越线位置/角度。
 - 底部滑块调整轨迹消抖、平滑、历史长度。
@@ -85,22 +50,57 @@ echo xilinx | sudo -S env XILINX_XRT=/usr /usr/local/share/pynq-venv/bin/python3
 停止服务：
 
 ```bash
-sudo pkill -f tracker_server.py
+python deploy_tracker.py stop
 ```
 
-## 7. OpenCV vs PL 正式对比
+## 4. 手动部署（备选）
+
+若不想用部署脚本，可手动上传：
+
+```bash
+scp hardware/overlay/intrusion_detection_optimized.bit \
+   hardware/overlay/intrusion_detection_optimized.hwh \
+   software/deploy/*.py \
+   software/tracking/*.py \
+   xilinx@192.168.137.125:/home/xilinx/intrusion_demo/
+
+ssh xilinx@192.168.137.125
+cd /home/xilinx/intrusion_demo
+echo xilinx | sudo -S env XILINX_XRT=/usr /usr/local/share/pynq-venv/bin/python3 \
+  tracker_server.py --source board --detector pl --port 8081
+```
+
+## 5. 位流哈希校验
+
+```bash
+cd /home/xilinx/intrusion_demo
+sha256sum intrusion_detection_optimized.bit intrusion_detection_optimized.hwh
+```
+
+| 版本 | 路径 | bit 哈希 | hwh 哈希 |
+|---|---|---|---|
+| 2025.2（默认） | `hardware/overlay/` | `b93031cc4d6d65f8…` | `6933fdf5cac0376b…` |
+| 2022.1（回退） | `hardware/overlay_2022_1/` | `78e325fcb43c73fe…` | `7e5b68b2906ab999…` |
+
+哈希不一致不要加载 overlay。
+
+## 6. 运行原始实时演示
+
+不启动 Web 服务，只跑基础检测+报警：
 
 ```bash
 cd /home/xilinx/intrusion_demo
 echo xilinx | sudo -S env XILINX_XRT=/usr /usr/local/share/pynq-venv/bin/python3 \
-  pynq_compare_motion.py \
-  --source synthetic --warmup 20 --frames 200 --repeats 3 \
-  --min-seconds 5 --opencv-threads 1 --dma-poll-sleep-us 100 \
-  --output-root /home/xilinx/pynq_results
+  pl_motion_detection_optimized.py --camera 0 --display 0
 ```
 
-> 若当前目录下没有 `intrusion_detection_optimized.bit`，脚本会自动使用仓库中的
-> `hardware/overlay/intrusion_detection_optimized.bit`；也可通过 `--bitstream` 显式指定。
+## 7. PC 端测试
+
+```bash
+cd software
+cd tests && python -m pytest -q        # 单元测试
+cd ../tracking && python -m pytest -q  # 跟踪模块测试
+```
 
 ## 8. PL-PS 接口协议
 
@@ -130,13 +130,16 @@ echo xilinx | sudo -S env XILINX_XRT=/usr /usr/local/share/pynq-venv/bin/python3
 | `RuntimeError: No Devices Found` | SSH 非登录 shell 缺少 `XILINX_XRT=/usr`，命令前加 `env XILINX_XRT=/usr`。 |
 | 加载 overlay 报权限错误 | 需要 root：`sudo -S env XILINX_XRT=/usr python3 ...` |
 | `ModuleNotFoundError: No module named 'pynq'` | 必须使用 `/usr/local/share/pynq-venv/bin/python3`。 |
+| 摄像头打不开 | 摄像头只能被一个进程占用；`/dev/video0` 需要 root。 |
 | DMA 错误或蜂鸣器常响 | 立即停止，检查 bit/hwh 哈希、电源、摄像头是否被其他进程占用。 |
 
-## 10. Vivado 版本迁移说明
+## 10. 重建位流
 
-当前 bitstream 由 **Vivado / Vitis HLS 2022.1** 生成。若迁移到赛事方推荐的 2025.2：
+位流已包含，**不需要重建**。如需修改 PL：
 
-1. 在 2025.2 中打开 Vivado 工程，按提示升级 IP。
-2. 重新综合、实现、生成 `.bit` 和 `.hwh`。
-3. 更新本目录中的 bit/hwh 及 SHA-256 校验值。
-4. 上板重新运行 benchmark，更新 [`hardware/reports/runtime_benchmark_report.md`](../hardware/reports/runtime_benchmark_report.md) 中的数据。
+1. 安装 Vivado 2025.2（Vitis HLS 已并入 `v++`，无需单独安装）。
+2. 打开 `hardware/vivado/project_1intrusion_detection_optimized/project_1intrusion_detection_optimized.xpr`。
+3. 按 `hardware/scripts/upgrade_in_place.tcl` 自动升级 IP 并核对 AXI 地址。
+4. 运行 `hardware/scripts/build_2025_2.tcl` 综合、实现、生成 bit/hwh。
+
+Windows 路径超过 260 字符时，先用 `subst X: <path>` 映射再打开工程。

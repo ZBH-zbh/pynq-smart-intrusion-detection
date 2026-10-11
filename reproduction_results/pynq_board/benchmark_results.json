@@ -1,0 +1,147 @@
+{
+  "notice": "PYNQ-Z2 same-frame-set OpenCV vs real PL benchmark.",
+  "environment": {
+    "platform": "Linux-5.15.19-xilinx-v2022.1-armv7l-with-glibc2.35",
+    "python": "3.10.4",
+    "pynq": "3.0.1",
+    "opencv": "4.5.4",
+    "numpy": "1.21.5",
+    "psutil": "5.9.0",
+    "logical_cpus": 2,
+    "opencv_threads": 1
+  },
+  "bitstream": {
+    "path": "/home/xilinx/intrusion_detection_optimized.bit",
+    "sha256": "78E325FCB43C73FE2C45FBE6F0C21A86DCB2DB1ACC8A50384810F9C954771EE4"
+  },
+  "config": {
+    "source": "synthetic",
+    "warmup_frames": 20,
+    "measure_frames": 200,
+    "repeats": 3,
+    "min_seconds": 5.0,
+    "dma_poll_sleep_us": 100.0
+  },
+  "runs": [
+    {
+      "backend": "opencv_software",
+      "input_sequence_frames": 200,
+      "performance_frames": 400,
+      "sequence_passes": 2,
+      "wall_seconds": 8.376675784999861,
+      "fps": 47.75163922618101,
+      "latency_mean_ms": 20.809965852490677,
+      "latency_p50_ms": 20.44143700004497,
+      "latency_p95_ms": 22.557613149751884,
+      "process_cpu_one_core_percent": 98.72651410012925,
+      "process_cpu_total_capacity_percent": 49.363257050064625,
+      "system_cpu_percent": 54.54545454545634,
+      "repeat": 1
+    },
+    {
+      "backend": "optimized_pl",
+      "input_sequence_frames": 200,
+      "performance_frames": 400,
+      "sequence_passes": 2,
+      "wall_seconds": 8.004531686000064,
+      "fps": 49.971692997305574,
+      "latency_mean_ms": 19.877160077503504,
+      "latency_p50_ms": 19.611575499993705,
+      "latency_p95_ms": 21.959686250011142,
+      "process_cpu_one_core_percent": 96.82015518227955,
+      "process_cpu_total_capacity_percent": 48.410077591139775,
+      "system_cpu_percent": 54.32569974554674,
+      "repeat": 1
+    },
+    {
+      "backend": "optimized_pl",
+      "input_sequence_frames": 200,
+      "performance_frames": 400,
+      "sequence_passes": 2,
+      "wall_seconds": 7.75500149599975,
+      "fps": 51.57961609760248,
+      "latency_mean_ms": 19.37208713249788,
+      "latency_p50_ms": 19.350098500126478,
+      "latency_p95_ms": 19.481783749961323,
+      "process_cpu_one_core_percent": 97.6144234647128,
+      "process_cpu_total_capacity_percent": 48.8072117323564,
+      "system_cpu_percent": 49.32301740812205,
+      "repeat": 2
+    },
+    {
+      "backend": "opencv_software",
+      "input_sequence_frames": 200,
+      "performance_frames": 400,
+      "sequence_passes": 2,
+      "wall_seconds": 8.256809734999933,
+      "fps": 48.444861010231726,
+      "latency_mean_ms": 20.623724192513464,
+      "latency_p50_ms": 20.594615000163685,
+      "latency_p95_ms": 20.7747024502396,
+      "process_cpu_one_core_percent": 100.03863798612852,
+      "process_cpu_total_capacity_percent": 50.01931899306426,
+      "system_cpu_percent": 50.60606060605949,
+      "repeat": 2
+    },
+    {
+      "backend": "opencv_software",
+      "input_sequence_frames": 200,
+      "performance_frames": 400,
+      "sequence_passes": 2,
+      "wall_seconds": 8.322663188000206,
+      "fps": 48.0615388325132,
+      "latency_mean_ms": 20.787308014996597,
+      "latency_p50_ms": 20.43032000005951,
+      "latency_p95_ms": 22.19085285009895,
+      "process_cpu_one_core_percent": 98.88661614789591,
+      "process_cpu_total_capacity_percent": 49.443308073947954,
+      "system_cpu_percent": 54.179194227300336,
+      "repeat": 3
+    },
+    {
+      "backend": "optimized_pl",
+      "input_sequence_frames": 200,
+      "performance_frames": 400,
+      "sequence_passes": 2,
+      "wall_seconds": 7.82498213000008,
+      "fps": 51.11832760185433,
+      "latency_mean_ms": 19.54752666998388,
+      "latency_p50_ms": 19.119560500030275,
+      "latency_p95_ms": 22.022166600140736,
+      "process_cpu_one_core_percent": 96.61363916750459,
+      "process_cpu_total_capacity_percent": 48.306819583752294,
+      "system_cpu_percent": 53.64751452550239,
+      "repeat": 3
+    }
+  ],
+  "summaries": {
+    "opencv_software": {
+      "runs": 3,
+      "fps_mean": 48.086013022975315,
+      "fps_stdev": 0.3472583331897096,
+      "latency_p50_ms_mean": 20.488790666756056,
+      "latency_p95_ms_mean": 21.841056150030145,
+      "process_cpu_one_core_percent_mean": 99.21725607805122,
+      "process_cpu_total_capacity_percent_mean": 49.60862803902561,
+      "system_cpu_percent_mean": 53.11023645960538
+    },
+    "optimized_pl": {
+      "runs": 3,
+      "fps_mean": 50.88987889892079,
+      "fps_stdev": 0.8279467262578653,
+      "latency_p50_ms_mean": 19.36041150005015,
+      "latency_p95_ms_mean": 21.154545533371067,
+      "process_cpu_one_core_percent_mean": 97.0160726048323,
+      "process_cpu_total_capacity_percent_mean": 48.50803630241615,
+      "system_cpu_percent_mean": 52.43207722639039
+    }
+  },
+  "agreement": {
+    "frames": 200,
+    "mask_pixel_agreement": 0.9999748046875,
+    "mask_mean_iou": 0.9982981487922481,
+    "target_count_agreement": 1.0,
+    "bbox_mean_matched_iou": 1.0,
+    "alarm_agreement": 1.0
+  }
+}

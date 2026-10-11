@@ -24,13 +24,7 @@ from motion_common import (
 from opencv_software_motion import SoftwareMotionDetector, opencv_bgr2gray
 
 
-# Default to the overlay shipped in this repository; on the PYNQ board copy
-# hardware/overlay/* to the same directory as this script, or pass --bitstream.
-DEFAULT_BITSTREAM = str(
-    Path(__file__).with_name("intrusion_detection_optimized.bit")
-    if (Path(__file__).parent / "intrusion_detection_optimized.bit").exists()
-    else Path(__file__).resolve().parents[2] / "hardware" / "overlay" / "intrusion_detection_optimized.bit"
-)
+DEFAULT_BITSTREAM = "/home/xilinx/intrusion_detection_optimized.bit"
 DMA_BASE_ADDR = 0x41E00000
 FRAME_DIFF_BASE = 0x40000000
 MORPHOLOGY_BASE = 0x40010000
