@@ -21,8 +21,6 @@
 
 ## 系统架构
 
-系统框图见 [`docs/architecture.md`](docs/architecture.md)，源码在 [`assets/draw_architecture.py`](assets/draw_architecture.py)。
-
 ```text
 USB 摄像头 (罗技 C270i, 320×240)
         │
@@ -85,15 +83,12 @@ python deploy_tracker.py board pl
 
 ```text
 .
-├── assets/                  # 架构图源文件、运行结果截图
 ├── docs/
-│   ├── architecture.md            # 系统架构图
-│   ├── reproduction.md            # 简明的复现指南
-│   ├── reproduction_full.md       # 完整复现与排错记录
-│   ├── Vivado2025.2安装记录.md     # 2025.2 迁移踩坑记录
-│   └── poster.md                  # 比赛海报内容
+│   ├── architecture.md            # 系统架构说明
+│   ├── collaboration_log.md       # 大模型协作记录（精简版）
+│   └── reproduction.md            # 复现指南与接口协议
 ├── hardware/
-│   ├── hls/optimized/       # 4 个 HLS IP 源码（rgb2gray / frame_diff / threshold / morphology）
+│   ├── hls/optimized/       # 4 个 HLS IP 源码
 │   ├── overlay/             # 2025.2 默认位流（bit + hwh）
 │   ├── overlay_2022_1/      # 2022.1 回退位流
 │   ├── vivado/              # Vivado 工程（.xpr / .bd / ip_repo）
